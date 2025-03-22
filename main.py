@@ -6,15 +6,9 @@ import colorama
 def main():
 
     m = MainMenu
-    while True:
-        m = m.printOptions()
-
     simulation = Simulation()
-    simulation.setupSimulation(3, 4, 5)
-
-    simulation.simulation_step()
-
-    simulation.printState()
+    while True:
+        m = m.printOptions(simulation)
 
 
 if __name__ == "__main__":

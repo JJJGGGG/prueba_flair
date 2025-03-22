@@ -24,6 +24,10 @@ class Floor:
         self.next_floor = floor
 
     def addRoom(self, room: "room.Room"):
+        if len(self.rooms) != 0:
+            prevRoom = self.rooms[-1]
+            prevRoom.addNextRoom(room)
+            room.addPrevRoom(prevRoom)
         self.rooms.append(room)
         room.setFloor(self)
         room.setFloorNumber(len(self.rooms)-1)

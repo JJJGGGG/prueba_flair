@@ -6,6 +6,10 @@ class Building:
         self.floors: list["floor.Floor"] = []
 
     def addFloor(self, floor: "floor.Floor"):
+        if len(self.floors) != 0:
+            prevFloor = self.floors[-1]
+            prevFloor.addNextFloor(floor)
+            floor.addPrevFloor(prevFloor)
         self.floors.append(floor)
         floor.setFloorNumber(len(self.floors)-1)
         floor.setBuilding(self)

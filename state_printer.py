@@ -16,7 +16,7 @@ class StatePrinter:
     def printState(self):
         print("Sensor map:")
         print("     -" + "----" * self.rooms)
-        for floor in range(self.floors):
+        for floor in range(self.floors-1, -1, -1):
             print(f"{floor+1: ^5d}|", end="")
             for room in range(self.rooms):
                 sens = self.getSensor(floor, room)
@@ -25,10 +25,10 @@ class StatePrinter:
             print("     -" + "----" * self.rooms)
 
     def triggerExitZombie(self, sensor: "sensor.Sensor"):
-        print(f"All zombies have left room {sensor.room_number} in floor {sensor.floor_number}")
+        print(f"All zombies have left room {sensor.room_number+1} in floor {sensor.floor_number+1}")
 
     def triggerEnterZombie(self, sensor: "sensor.Sensor"):
-        print(f"Zombies have entered room {sensor.room_number} in floor {sensor.floor_number}")
+        print(f"Zombies have entered room {sensor.room_number+1} in floor {sensor.floor_number+1}")
 
     def getSensor(self, floor: int, room: int):
         return next(s for s in self.sensors if s.floor_number == floor and s.room_number == room)

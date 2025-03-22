@@ -36,10 +36,9 @@ class Simulation:
         for _ in range(zombieNumber):
             self.addZombie()
 
-    def setupSimulation(self, n_floors: int, n_rooms: int, n_zombies: int):
+    def setupBuilding(self, n_floors: int, n_rooms: int):
         builder = builders.Builder()
         self.create_building(builder, n_floors, n_rooms)
-        self.addZombies(n_zombies)
 
     def simulation_step(self):
         for zomb in self.zombies:

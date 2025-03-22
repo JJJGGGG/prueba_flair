@@ -1,5 +1,7 @@
 from enum import Enum
 
+import state_printer
+
 
 class SensorStates(Enum):
     NORMAL = "normal"
@@ -11,7 +13,7 @@ class Sensor:
         self.state = SensorStates.NORMAL
         self.floor_number = floor_number
         self.room_number = room_number
-        self.observers = []
+        self.observers: list["state_printer.StatePrinter"] = []
 
     def addObserver(self, observer):
         self.observers.append(observer)

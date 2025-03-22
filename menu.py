@@ -1,6 +1,24 @@
+import random
 import typing
 
 import simulation
+import os
+
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def input_int(message: str):
+    i = None
+    while i is None:
+        try:
+            clear_screen()
+            i = int(input(message))
+        except (ValueError):
+            print("The value entered is not an integer")
+    return i
+
 
 class Menu:
     options: list[tuple[str, typing.Callable[["simulation.Simulation"], "Menu"]]] = []
@@ -16,30 +34,65 @@ class Menu:
         return option
 
     @classmethod
-    def printOptions(cls):
-        print(cls.__name__)
+    def printOptions(cls, sim):
+        clear_screen()
+        print(cls.menu_name)
         for i, (option, _) in enumerate(cls.options):
             print(f"{i+1: >3d}: {option}")
 
         name, action = cls.promptOptionSelection()
 
-        newMenu = action()
+        clear_screen()
+
+        newMenu = action(sim)
 
         return newMenu
 
-class SelectionMenu(Menu):
+class TurnMenu(Menu):
+    menu_name = "Selection Menu"
     options = [
-        ("Stay", lambda sim: SelectionMenu),
-        ("Back", lambda sim: MainMenu)
+        ("Advance Simulation", lambda sim: TurnMenu.advanceSimulation(sim)),
+        ("Show Current State", lambda sim: TurnMenu.showCurrentState(sim)),
+        ("End Simulation", lambda sim: MainMenu)
     ]
+
+    @staticmethod
+    def advanceSimulation(sim: "simulation.Simulation"):
+        print("Sensor Messages this turn:")
+        sim.simulation_step()
+        input()
+        return TurnMenu
+
+    @staticmethod
+    def showCurrentState(sim: "simulation.Simulation"):
+        sim.printState()
+        input()
+        return TurnMenu
 
 class MainMenu(Menu):
+    menu_name = "Main Menu"
     options = [
-        ("Start Simulation", lambda sim: SelectionMenu),
-        ("Print Something", lambda sim: MainMenu.printSomething())
+        ("Start Simulation", lambda sim: MainMenu.selectParameters(sim)),
+        ("Exit", lambda sim: MainMenu.exit())
     ]
-    @classmethod
-    def printSomething(self):
-        print("Hola")
-        return MainMenu
 
+    @staticmethod
+    def selectParameters(simulation: "simulation.Simulation"):
+        floors_count = input_int("Enter the number of floors of the building: ")
+        rooms_per_floor = input_int("Enter the number of rooms per floor: ")
+
+        simulation.setupBuilding(floors_count, rooms_per_floor)
+        zombieCount = random.randint(1, 20)
+
+        clear_screen()
+
+        simulation.addZombies(zombieCount)
+
+        input()
+
+        return TurnMenu
+
+    @staticmethod
+    def exit():
+        print("Exiting...")
+        exit(0)
