@@ -12,7 +12,6 @@ class Simulation:
         self.state_printer: list[state_printer.StatePrinter] = None
 
     def create_building(self, builder: builders.Builder, n_floors: int, n_rooms: int):
-        self.state_printer = state_printer.StatePrinter(n_floors, n_rooms)
         builder.buildBuilding()
         for _ in range(n_floors):
             floor_number = builder.buildFloor()
@@ -20,6 +19,7 @@ class Simulation:
                 room_number = builder.buildRoom(floor_number)
                 builder.buildSensor(floor_number, room_number)
         self.building = builder.building
+        self.state_printer = state_printer.StatePrinter(self.building, n_floors, n_rooms)
         self.state_printer.setSensors(builder.sensors)
 
     def addZombie(self):

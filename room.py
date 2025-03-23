@@ -5,8 +5,8 @@ import zombie
 
 class Room:
     def __init__(self):
-        self.sensor: "sensor.Sensor "= None
-        self.zombies = []
+        self.sensor: "sensor.Sensor" = None
+        self.zombies: list["zombie.Zombie"] = []
         self.prevRoom: Room = None
         self.nextRoom: Room = None
         self.floor: "floor.Floor" = None
@@ -38,8 +38,8 @@ class Room:
 
     def exitZombie(self, zombie: "zombie.Zombie"):
         self.zombies.remove(zombie)
-        if self.hasNoZombies():
-            self.sensor.resetSensor()
+        # if self.hasNoZombies():
+        #     self.sensor.resetSensor()
 
     def enterZombie(self, zombie: "zombie.Zombie"):
         self.sensor.triggerSensor()

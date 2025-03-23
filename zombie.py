@@ -1,3 +1,4 @@
+import random
 import room
 from faker import Faker
 
